@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Cart - BAYSHORE PLUMBERS</title>
+    <link rel="stylesheet" href="matlook.css">
+</head>
+<body>
+  <!-- Logo and Heading for Printing -->
+  <div class="print-header">
+    <img src="BP.jpg" alt="Bayshore Plumbers Logo">
+    <h1>Bayshore Plumbers - Project Equipment List</h1>
+  </div>
+  
+    <div class="header-container">
+        <header class="navbar">
+            <div class="nav-logo border">
+                <div class="logo"></div>
+            </div>
+
+            <div class="nav-search">
+                <input placeholder="Search Bayshore Plumbers Equipment List" class="search-input" id="search-input">
+                <div class="search-icon">
+                    <i class="fa-solid fa-magnifying-glass" onclick="searchMaterials()"></i>
+                </div>
+            </div>
+
+            <div class="cart-icon" onclick="goBack()">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+        </header>
+    </div>
+
+    <div class="input-fields">
+        <table>
+            <tr>
+                <td><label for="technician-name">TECHNICIAN'S NAME:</label></td>
+                <td><input type="text" id="technician-name" name="technician-name"></td>
+            </tr>
+            <tr>
+                <td><label for="date">DATE:</label></td>
+                <td><input type="date" id="date" name="date"></td>
+            </tr>
+            <tr>
+                <td><label for="job-address">JOB ADDRESS:</label></td>
+                <td><input type="text" id="job-address" name="job-address"></td>
+            </tr>
+            <tr>
+                <td><label for="notes">NOTES (if any):</label></td>
+                <td><textarea id="notes" name="notes" rows="4"></textarea></td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container" id="cart-container">
+        <!-- Cart items will be dynamically added here -->
+    </div>
+
+    <div class="total-price" id="total-price-container">
+        <!-- Total price will be dynamically added here -->
+    </div>
+
+    <div class="button-container">
+        <button onclick="finalizeAndPrint()">Print</button>
+    </div>
+
+    <script>
+        let cart = [];
+        const materialsData = [
+            {
+                "Ln#": 1,
+                "Description": "Excavator Big",
+                "PricePerDay": 50.00,
+                "PricePerHour": 6.25,
+                "Qty": 1,
+                "Unit": "Machine",
+                "ImageURL": "Excavator Big.jpg"
+            },
+            {
+                "Ln#": 2,
+                "Description": "Excavator Small",
+                "PricePerDay": 40.00,
+                "PricePerHour": 5.00,
+                "Qty": 1,
+                "Unit": "Machine",
+                "ImageURL": "Excavator Small.jpg"
+            },
+            {
+                "Ln#": 3,
+                "Description": "Bob Cat/ Skid Steer",
+                "PricePerDay": 40.00,
+                "PricePerHour": 5.00,
+                "Qty": 1,
+                "Unit": "Machine",
+                "ImageURL": "Bobcat.jpg"
+            },
+            {
+                "Ln#": 4,
+                "Description": "Hydro Truck",
+                "PricePerDay": 40.00,
+                "PricePerHour": 5.00,
+                "Qty": 1,
+                "Unit": "Truck",
+                "ImageURL": "Hydro Truck.jpg"
+            },
+            {
+                "Ln#": 5,
+                "Description": "Dump Truck",
+                "PricePerDay": 30.00,
+                "PricePerHour": 3.75,
+                "Qty": 1,
+                "Unit": "Truck",
+                "ImageURL": "Dump Truck.jpg"
+            },
+            {
+                "Ln#": 6,
+                "Description": "Trench Plates",
+                "PricePerDay": 10,
+                "PricePerHour": 1.25,
+                "Qty": 1,
+                "Unit": "Plate",
+                "ImageURL": "Trench Plates.jpg"
+            },
+            {
+                "Ln#": 7,
+                "Description": "Vibrating Roller",
+                "PricePerDay": 20.00,
+                "PricePerHour": 2.50,
+                "Qty": 1,
+                "Unit": "Roller",
+                "ImageURL": "Vibrating Roller.jpg"
+            },
+            {
+                "Ln#": 8,
+                "Description": "TrenchLess Machine",
+                "PricePerDay": 50.00,
+                "PricePerHour": 6.25,
+                "Qty": 1,
+                "Unit": "Machine",
+                "ImageURL": "Trenchless Machine.jpg"
+            },
+            {
+                "Ln#": 9,
+                "Description": "Shoring",
+                "PricePerDay": 10.00,
+                "PricePerHour": 1.25,
+                "Qty": 1,
+                "Unit": "Set",
+                "ImageURL": "Shoring.jpg"
+            }
+        ];
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            for (const [name, quantity] of params) {
+                cart.push({ name: decodeURIComponent(name), quantity: parseInt(quantity), priceOption: 'day' });
+            }
+            displayCartItems();
+        };
+
+        function displayCartItems() {
+    const cartContainer = document.getElementById('cart-container');
+    cartContainer.innerHTML = ''; // Clear previous contents
+
+    cart.forEach((item, index) => {
+        const material = materialsData.find(data => data.Description === item.name);
+        console.log("Material data for item:", item.name, material); // Debugging statement
+        if (!material) {
+            console.log("Material not found for item:", item.name); // Debugging statement
+            return; // Skip if material data not found
+        }
+
+        const cartItemContainer = document.createElement('div');
+        cartItemContainer.classList.add('cart-item-container'); // Add cart-item-container class to container
+
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('item-details');
+        cartItem.innerHTML = `
+            <h3><strong>${index + 1}. ${item.name}<strong></h3>
+            <p>Quantity: <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${index}, this.value)"></p>
+            <p>Price Option: 
+                <select onchange="updatePriceOption(${index}, this.value)">
+                    <option value="day" ${item.priceOption === 'day' ? 'selected' : ''}>Per Day</option>
+                    <option value="hour" ${item.priceOption === 'hour' ? 'selected' : ''}>Per Hour</option>
+                </select>
+            </p>
+            <p>Price Per Day: $${material.PricePerDay.toFixed(2)}</p>
+            <p>Price Per Hour: $${material.PricePerHour.toFixed(2)}</p>
+            <p>Total Price: $${calculatePrice(item).toFixed(2)}</p>
+            <button onclick="removeFromCart(${index})">Remove</button>
+        `;
+
+        cartItemContainer.appendChild(cartItem); // Append item details to container
+        cartContainer.appendChild(cartItemContainer); // Append container to cart container
+    });
+
+    updateTotalPrice();
+}
+
+        function updateQuantity(index, newQuantity) {
+            if (newQuantity > 0) {
+                cart[index].quantity = parseInt(newQuantity);
+                displayCartItems();
+            }
+        }
+
+        function updatePriceOption(index, newPriceOption) {
+            cart[index].priceOption = newPriceOption;
+            displayCartItems();
+        }
+
+        function calculatePrice(item) {
+    const material = materialsData.find(data => data.Description === item.name);
+    if (!material) {
+        console.error("Material data not found for item:", item.name); // Log an error if material data is not found
+        return 0; // Return 0 if material data is not found
+    }
+
+    const pricePerUnit = item.priceOption === 'day' ? material.PricePerDay : material.PricePerHour;
+    const totalHours = item.quantity * (item.priceOption === 'day' ? 8 : 1);
+    return pricePerUnit * totalHours;
+}
+
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            displayCartItems();
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function updateTotalPrice() {
+            const totalPriceContainer = document.getElementById('total-price-container');
+            const totalPrice = cart.reduce((acc, item) => acc + calculatePrice(item), 0);
+            totalPriceContainer.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
+        }
+
+        function finalizeAndPrint() {
+            window.print();
+        }
+
+        function searchMaterials() {
+            // Functionality for searching materials can be added here if needed
+            // You can leave it empty for now if search functionality is not required in this page
+        }
+    </script>
+</body>
+</html>

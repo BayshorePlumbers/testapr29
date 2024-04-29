@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAYSHORE PLUMBERS - EQUIPMENT LIST</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="matlook.css">
+</head>
+<body>
+    <div class="header-container">
+        <header>
+            <div class="navbar">
+                <div class="nav-logo border">
+                    <div class="logo"></div>
+                </div>
+
+                <div class="nav-search">
+                    <select class="search-select" id="category-select">
+                        <option value="ALL">ALL</option>
+                    </select>
+                    <input placeholder="Search Bayshore Plumbers Equipment List" class="search-input" id="search-input">
+                    <div class="search-icon">
+                        <i class="fa-solid fa-magnifying-glass" onclick="searchMaterials()"></i>
+                    </div>
+                </div>
+
+                <div class="cart-icon" onclick="goToCartPage()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-item-count" class="cart-item-count"></span>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- Add the materials container here -->
+    <div class="container" id="material-container">
+        <!-- Materials will be dynamically added here -->
+    </div>
+
+    <div class="pagination" id="pagination-container">
+        <!-- Pagination links will be dynamically added here -->
+    </div>
+
+    <script>
+        // Define the materialsData array
+        const materialsData = [
+            {
+                "Ln#": 1,
+                "Description": "Excavator Big",
+                "PricePerDay": 50.00,
+                "PricePerHour": 6.25,
+                "Qty": 1,
+                "Unit": "Machine",
+                "ImageURL": "Excavator Big.jpg"
+            },
+            {
+                "Ln#": 2,
+                "Description": "Excavator Small",
+                "PricePerDay": 40.00,
+                "PricePerHour": 5.00,
+                "Qty": 1,
+                "Unit": "Machine",
+                "ImageURL": "Excavator Small.jpg"
+            },
+            {
+                "Ln#": 3,
+                "Description": "Bob Cat/ Skid Steer",
+                "PricePerDay": 40.00,
+                "PricePerHour": 5.00,
+                "Qty": 1,
+                "Unit": "Machine",
+                "ImageURL": "Bobcat.jpg"
+            },
+            {
+                "Ln#": 4,
+                "Description": "Hydro Truck",
+                "PricePerDay": 40.00,
+                "PricePerHour": 5.00,
+                "Qty": 1,
+                "Unit": "Truck",
+                "ImageURL": "Hydro Truck.jpg"
+            },
+            {
+                "Ln#": 5,
+                "Description": "Dump Truck",
+                "PricePerDay": 30.00,
+                "PricePerHour": 3.75,
+                "Qty": 1,
+                "Unit": "Truck",
+                "ImageURL": "Dump Truck.jpg"
+            },
+            {
+                "Ln#": 6,
+                "Description": "Trench Plates",
+                "PricePerDay": 10,
+                "PricePerHour": 1.25,
+                "Qty": 1,
+                "Unit": "Plate",
+                "ImageURL": "Trench Plates.jpg"
+            },
+            {
+                "Ln#": 7,
+                "Description": "Vibrating Roller",
+                "PricePerDay": 20.00,
+                "PricePerHour": 2.50,
+                "Qty": 1,
+                "Unit": "Roller",
+                "ImageURL": "Vibrating Roller.jpg"
+            },
+            {
+                "Ln#": 8,
+                "Description": "TrenchLess Machine",
+                "PricePerDay": 50.00,
+                "PricePerHour": 6.25,
+                "Qty": 1,
+                "Unit": "Machine",
+                "ImageURL": "Trenchless Machine.jpg"
+            },
+            {
+                "Ln#": 9,
+                "Description": "Shoring",
+                "PricePerDay": 10.00,
+                "PricePerHour": 1.25,
+                "Qty": 1,
+                "Unit": "Set",
+                "ImageURL": "Shoring.jpg"
+            }
+        ];
+
+        let currentPage = 1;
+        const materialsPerPage = 25;
+        let cart = [];
+
+        function displayMaterials(page, materials = materialsData) {
+            const materialsContainer = document.getElementById('material-container');
+            const startIndex = (page - 1) * materialsPerPage;
+            const endIndex = Math.min(startIndex + materialsPerPage, materials.length);
+            const materialsToShow = materials.slice(startIndex, endIndex);
+
+            materialsContainer.innerHTML = ''; // Clear previous contents
+
+            materialsToShow.forEach(material => {
+                const materialDiv = document.createElement('div');
+                materialDiv.classList.add('material');
+
+                const img = document.createElement('img');
+                img.src = `Equipment Images/${material.ImageURL}`; // Set the image source
+                img.alt = material.Description; // Set the alt text for accessibility
+
+                const detailsDiv = document.createElement('div');
+                detailsDiv.classList.add('details');
+                detailsDiv.innerHTML = `
+                    <p><strong>Description: ${material.Description}</strong></p>
+                    <p>Price Per Day: $${material.PricePerDay.toFixed(2)}</p>
+                    <p>Price Per Hour: $${material.PricePerHour.toFixed(2)}</p>
+                    <p>Quantity: ${material.Qty} ${material.Unit}</p>
+                    <p><input type="radio" name="price-option" value="day"> Per Day</p>
+                    <p><input type="radio" name="price-option" value="hour"> Per Hour</p>
+                `;
+
+                const addToCartBtn = document.createElement('button');
+                addToCartBtn.classList.add('add-to-cart');
+                addToCartBtn.textContent = 'Add to Cart';
+                addToCartBtn.addEventListener('click', () => addToCart(material));
+
+                materialDiv.appendChild(img);
+                materialDiv.appendChild(detailsDiv);
+                materialDiv.appendChild(addToCartBtn); // Append Add to Cart button
+                materialsContainer.appendChild(materialDiv);
+            });
+
+            displayPagination(materials.length);
+        }
+
+        function searchMaterials() {
+            const searchInput = document.getElementById('search-input').value.trim().toLowerCase();
+            const categorySelect = document.getElementById('category-select').value.toLowerCase();
+
+            if (searchInput === '' && categorySelect === 'all') {
+                // If search input is empty, display all materials
+                currentPage = 1; // Reset to the first page
+                displayMaterials(currentPage);
+                return;
+            }
+
+            const filteredMaterials = materialsData.filter(material => {
+                // Check if the material description matches the search input and category filter
+                const matchesSearch = material.Description.toLowerCase().includes(searchInput);
+                const matchesCategory = categorySelect === 'all' || material.Description.toLowerCase().includes(categorySelect);
+                return matchesSearch && matchesCategory;
+            });
+
+            currentPage = 1; // Reset to the first page after search
+            displayMaterials(currentPage, filteredMaterials);
+        }
+
+        function addToCart(item) {
+            // Check if item is already in cart
+            const existingItemIndex = cart.findIndex(cartItem => cartItem.name === item.Description);
+            if (existingItemIndex !== -1) {
+                // If item is already in cart, increase its quantity
+                cart[existingItemIndex].quantity++;
+            } else {
+                // If item is not in cart, add it to cart with quantity 1
+                cart.push({ name: item.Description, quantity: 1, price: item.PricePerDay }); // Default to per day price
+            }
+            updateCartItemCount();
+        }
+
+        function updateCartItemCount() {
+            const cartItemCount = document.getElementById('cart-item-count');
+            const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
+            cartItemCount.textContent = itemCount;
+        }
+
+        function displayPagination(totalMaterials) {
+            const paginationContainer = document.getElementById('pagination-container');
+            paginationContainer.innerHTML = '';
+
+            const totalPages = Math.ceil(totalMaterials / materialsPerPage);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLink = document.createElement('span');
+                pageLink.classList.add('page-link');
+                pageLink.textContent = i;
+                if (i === currentPage) {
+                    pageLink.classList.add('active');
+                }
+                pageLink.addEventListener('click', () => {
+                    currentPage = i;
+                    displayMaterials(currentPage);
+                });
+                paginationContainer.appendChild(pageLink);
+            }
+        }
+
+        // Call the function to display materials when the page loads
+        window.onload = () => {
+            displayMaterials(currentPage);
+            updateCartItemCount(); // Update cart item count on page load
+        };
+
+        function goToCartPage() {
+            // Redirect to cart.html page
+            const queryString = cart.map(item => `${encodeURIComponent(item.name)}=${item.quantity}`).join('&');
+            window.location.href = `cart.html?${queryString}`;
+        }
+    </script>
+</body>
+</html>

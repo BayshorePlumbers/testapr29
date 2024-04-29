@@ -1,0 +1,104 @@
+/* print.css */
+
+/* Reset margin and padding */
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set A4 size */
+@page {
+    size: A4;
+    margin: 0;
+}
+
+/* Hide print buttons */
+#calculateBtn, #printButton {
+    display: none;
+}
+
+/* Adjust layout for printing */
+h1 {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.logo-container {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px; /* Increase margin for better spacing */
+}
+
+.logo {
+    max-width: 150px; /* Reduce logo size */
+}
+
+.container {
+    width: 90%; /* Adjust container width for better fit on A4 */
+    margin: 0 auto;
+    position: relative;
+}
+
+.calculator {
+    padding: 10px;
+    border: 5px solid #000; /* Black border */
+    border-radius: 10px;
+    margin: 10px auto;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.column {
+    width: 48%;
+}
+
+label {
+    font-weight: bold;
+}
+
+/* Adjust font color for better printing */
+body, label, input, select, textarea {
+    color: #000 !important; /* Black text */
+}
+
+/* Additional adjustments for printing */
+textarea {
+    height: auto; /* Allow textarea to expand to fit content */
+    min-height: 100px; /* Set minimum height for better appearance */
+}
+
+.column-container {
+    flex-direction: column; /* Adjust column layout for better printing */
+}
+
+/* Adjust input width for better fit on A4 */
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 22px);
+}
+
+/* Ensure inputs span full width */
+.form-control {
+    width: 100% !important;
+}
+/* Fix position of output group at the bottom center */
+.output-group {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%; /* Adjust width if necessary */
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* Scale down the webpage to 89% for printing */
+@media print {
+    body {
+        zoom: 89%;
+    }
+}

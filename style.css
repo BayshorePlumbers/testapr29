@@ -1,0 +1,189 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure full height of the viewport */
+}
+
+.container {
+    width: 100%; /* Adjusted width for better responsiveness */
+    max-width: 2000px;
+    margin: 20px auto; /* Center the container */
+    display: flex; /* Add display flex */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+}
+
+.calculator {
+    padding: 20px;
+    border: 5px solid rgb(7, 7, 7); /* Updated border color */
+    border-radius: 10px;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; /* Center items horizontally */
+}
+
+.calculator form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Adjust spacing between form rows */
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Adjusted column width */
+    margin-bottom: 20px;
+}
+
+.column:first-child {
+    justify-content: flex-start; /* Align content to the start (left) */
+}
+
+.column:last-child {
+    justify-content: flex-end; /* Align content to the end (right) */
+}
+
+.column:nth-child(odd) {
+    margin-right: 10%; /* Add margin to create space between columns */
+}
+
+.column:nth-child(even) {
+    margin-left: 10%; /* Add margin to create space between columns */
+}
+
+label {
+    display: block;
+    font-weight: normal;
+    margin-bottom: 10px; /* Increased margin for better spacing */
+    text-align: left; /* Left-align labels in the first column */
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: calc(100% - 12px); /* Adjusted input width */
+    padding: 14px; /* Increased padding for better touch experience */
+    border-radius: 10px; /* Slightly rounded corners for aesthetics */
+    border: 1px solid hsl(71, 58%, 91%);
+    margin-top: 2px; /* Increased margin for better spacing */
+    margin-bottom: 10px;
+}
+
+.checkbox-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2px; /* Increased margin for better spacing */
+    margin-bottom: 10px;
+}
+
+.checkbox-container label {
+    margin-right: 10px;
+}
+
+button {
+    width: calc(100% - 30px); /* Full width button for better touch interaction */
+    padding: 15px; /* Increased padding for better touch experience */
+    background-color: rgb(202, 165, 242);
+    color: hsl(0, 3%, 6%);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 30px; /* Increased margin for better spacing */
+}
+
+button:hover {
+    background-color: hsl(75, 100%, 35%);
+}
+
+.output-group {
+    margin-top: 30px; /* Increased margin for better spacing */
+    text-align: center; /* Center the content */
+    align-items: center;
+    width: 100%; /* Set width to 100% */
+}
+
+.button-container {
+    width: 100%; /* Set width to 100% for the button container */
+    display: flex;
+    justify-content: center; /* Center the button horizontally */
+    align-items: center;
+    margin-top: 20px; /* Adjusted margin for button container */
+}
+
+.button-container button {
+    width: 50%; /* Adjusted width for the button */
+}
+
+#finalPrice {
+    font-weight: bold;
+}
+
+h1, h2, h5 {
+    margin: 20px 0; /* Increased margin for better spacing */
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 30px; /* Adjusted margin-bottom for h1 */
+}
+
+.logo-container {
+    margin-bottom: 30px; /* Increased margin-bottom for logo container */
+    display: flex; /* Add display flex */
+    justify-content: center; /* Center the logo horizontally */
+}
+
+.logo {
+    max-width: 300px; /* Adjusted max-width for better responsiveness */
+    max-height: auto;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.notes-section {
+    width: 100%;
+}
+
+.notes-section textarea {
+    width: calc(100% - 24px);
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid hsl(71, 58%, 91%);
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+
+.column:last-child button {
+    margin-top: 10px; /* Adjusted margin for button in the last column */
+}
+
+.column:last-child .output-group {
+    margin-top: 10px; /* Adjusted margin for output group in the last column */
+    text-align: right; /* Right-align output group in the last column */
+}
+.labor-details-row {
+    margin-bottom: 20px; /* Add margin to create space between labor details row and the next row */
+}
+
+.labor-details-row .column {
+    margin-right: 40px; /* Add margin between columns */
+}
+
+.labor-details-row .column:last-child {
+    margin-right: 0; /* Remove margin from the last column to prevent extra space */
+}
